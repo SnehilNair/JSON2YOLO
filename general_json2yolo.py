@@ -254,7 +254,7 @@ def convert_ath_json(json_dir):  # dir contains json annotations and images
 
 def convert_coco_json(json_dir="../coco/annotations/", use_segments=False, cls91to80=False):
     """Converts COCO JSON format to YOLO label format, with options for segments and class mapping."""
-    save_dir = make_dirs()  # output directory
+    save_dir = make_dirs("/content/customDataset")  # output directory
     coco80 = coco91_to_coco80_class()
 
     # Import json
@@ -306,6 +306,7 @@ def convert_coco_json(json_dir="../coco/annotations/", use_segments=False, cls91
                         segments.append(s)
 
             # Write
+            f = f.replace("/", "_")
             with open((fn / f).with_suffix(".txt"), "a") as file:
                 for i in range(len(bboxes)):
                     line = (*(segments[i] if use_segments else bboxes[i]),)  # cls, box or segments
@@ -391,9 +392,9 @@ if __name__ == "__main__":
 
     if source == "COCO":
         convert_coco_json(
-            "../datasets/coco/annotations",  # directory with *.json
+            "/content",  # directory with *.json
             use_segments=True,
-            cls91to80=True,
+            cls91to80=False,
         )
 
     elif source == "infolks":  # Infolks https://infolks.info/
